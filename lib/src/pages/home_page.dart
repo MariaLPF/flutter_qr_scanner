@@ -1,9 +1,18 @@
+
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_qr_scanner/src/bloc/scan_bloc.dart';
+import 'package:flutter_qr_scanner/src/models/scan_model.dart';
 
 import 'package:flutter_qr_scanner/src/pages/addresses_page.dart';
 import 'package:flutter_qr_scanner/src/pages/maps_page.dart';
+import 'package:flutter_qr_scanner/src/utils/Utils.dart' as Utils;
 
-import 'package:barcode_scan/barcode_scan.dart';
+//import 'package:barcode_scan/barcode_scan.dart';
+
+//import 'package:flutter_qr_scanner/src/providers/db_provider.dart';
+
 
 class HomePage extends StatefulWidget {
   
@@ -12,6 +21,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+  final scansBloc = new ScansBloc();
+
   int currentIndex = 0;
   @override
   Widget build(BuildContext context) {
@@ -21,7 +33,7 @@ class _HomePageState extends State<HomePage> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.delete_forever), 
-            onPressed: (){},
+            onPressed: scansBloc.deleteAllScan
           )
         ],
       ),
@@ -64,18 +76,31 @@ class _HomePageState extends State<HomePage> {
 
   _scanQR() async{
 
-    //https://fernando-herrera.com
-    //geo:43.34691726057801,-8.397832064236486
+    String futureString = 'https://fernando-herrera.com';
+    String futureStringGeo = 'geo:43.34691726057801,-8.397832064236486';
 
-    String futureString ='';
-    /*try{
+    /*String futureString ='';
+    try{
       futureString = await BarcodeScanner.scan();
     }catch(e){
       futureString = e.toString();
-    }
-    print('Future string: $futureString');
+    }*/
+    
     if(futureString != null){
       print('Tenemos información');
-    }*/
+      final newScanValue = ScanModel(value: futureString);
+      //DBProvider.db.newScan(newScanValue);
+      scansBloc.addScan(newScanValue);
+
+      final newScanValueGeo = ScanModel(value: futureStringGeo);
+      scansBloc.addScan(newScanValueGeo);
+      if(Platform.isIOS){
+        Future.delayed(Duration(milliseconds: 750), (){
+          Utils.openScan(newScanValue);
+        });
+      }else{
+        Utils.openScan(newScanValue);
+      }
+    }
   }
 }

@@ -6,17 +6,17 @@ class ScanModel {
 
     ScanModel({
         this.id,
-        this.type,
+        this.type, //entiendo que no es necesario ya que por el valor sabemos el tipo
         this.value,
     }){
-      if(value.contains('http')){
+      if(value.startsWith('http')){
         this.type = 'http';
       } else{
         this.type = 'geo';
       }
     }
 
-    factory ScanModel.fromJson(Map<String, dynamic> json) => Client(
+    factory ScanModel.fromJson(Map<String, dynamic> json) => ScanModel(
         id    : json["id"],
         type  : json["type"],
         value : json["value"],
