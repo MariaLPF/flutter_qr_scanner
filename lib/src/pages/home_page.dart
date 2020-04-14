@@ -9,7 +9,7 @@ import 'package:flutter_qr_scanner/src/pages/addresses_page.dart';
 import 'package:flutter_qr_scanner/src/pages/maps_page.dart';
 import 'package:flutter_qr_scanner/src/utils/Utils.dart' as Utils;
 
-//import 'package:barcode_scan/barcode_scan.dart';
+import 'package:barcode_scan/barcode_scan.dart';
 
 //import 'package:flutter_qr_scanner/src/providers/db_provider.dart';
 
@@ -24,7 +24,7 @@ class _HomePageState extends State<HomePage> {
 
   final scansBloc = new ScansBloc();
 
-  int currentIndex = 0;
+  int selectIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +37,7 @@ class _HomePageState extends State<HomePage> {
           )
         ],
       ),
-      body: _callPage(currentIndex),
+      body: _callPage(selectIndex),
       bottomNavigationBar: _createBottomNavigationBar(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
@@ -60,10 +60,10 @@ class _HomePageState extends State<HomePage> {
 
   Widget _createBottomNavigationBar() {
     return BottomNavigationBar(
-      currentIndex: currentIndex, //Indica elemento activo
+      currentIndex: selectIndex, //Indica elemento activo
       onTap: (index){
         setState(() {
-          currentIndex = index;
+          selectIndex = index;
         });
       },
       items: [
@@ -76,24 +76,24 @@ class _HomePageState extends State<HomePage> {
 
   _scanQR(BuildContext context) async{
 
-    String futureString = 'https://fernando-herrera.com';
-    String futureStringGeo = 'geo:43.34691726057801,-8.397832064236486';
+   // String futureString = 'https://fernando-herrera.com';
+   // String futureStringGeo = 'geo:43.34691726057801,-8.397832064236486';
 
-    /*String futureString ='';
+    String futureString ='';
     try{
       futureString = await BarcodeScanner.scan();
     }catch(e){
       futureString = e.toString();
-    }*/
+    }
     
     if(futureString != null){
       print('Tenemos información');
-      final newScanValue = ScanModel(value: futureString);
+      //final newScanValue = ScanModel(value: futureString);
       //DBProvider.db.newScan(newScanValue);
-      scansBloc.addScan(newScanValue);
+     //scansBloc.addScan(newScanValue);
 
-      final newScanValueGeo = ScanModel(value: futureStringGeo);
-      scansBloc.addScan(newScanValueGeo);
+      final newScanValue = ScanModel(value: futureString);
+      scansBloc.addScan(newScanValue);
       if(Platform.isIOS){
         Future.delayed(Duration(milliseconds: 750), (){
           Utils.openScan(context, newScanValue);
