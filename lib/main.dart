@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_qr_scanner/src/pages/container_map_page.dart';
 import 'package:flutter_qr_scanner/src/pages/home_page.dart';
 //import 'package:flutter_qr_scanner/src/pages/addresses_page.dart';
 //import 'package:flutter_qr_scanner/src/pages/maps_page.dart';
@@ -14,6 +15,7 @@ class MyApp extends StatelessWidget {
       initialRoute: 'home',
       routes: {
         'home'         : (BuildContext context) => HomePage(),
+        'mapa' : (BuildContext context) => ContainerMapPage(),
         //'mapsPage'     : (BuildContext context) => MapsPage(),
         //'addressesPage': (BuildContext context) => AddressesPage(),
       },

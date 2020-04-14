@@ -42,7 +42,7 @@ class _HomePageState extends State<HomePage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.filter_center_focus),
-        onPressed: _scanQR,
+        onPressed: () => _scanQR(context),
         backgroundColor: Theme.of(context).primaryColor,
       ),
     );
@@ -74,7 +74,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  _scanQR() async{
+  _scanQR(BuildContext context) async{
 
     String futureString = 'https://fernando-herrera.com';
     String futureStringGeo = 'geo:43.34691726057801,-8.397832064236486';
@@ -96,10 +96,10 @@ class _HomePageState extends State<HomePage> {
       scansBloc.addScan(newScanValueGeo);
       if(Platform.isIOS){
         Future.delayed(Duration(milliseconds: 750), (){
-          Utils.openScan(newScanValue);
+          Utils.openScan(context, newScanValue);
         });
       }else{
-        Utils.openScan(newScanValue);
+        Utils.openScan(context,newScanValue);
       }
     }
   }
